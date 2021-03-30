@@ -1,6 +1,6 @@
 {
   "name": "electron-updater",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Tutorial and test electron updater app",
   "main": "main.js",
   "scripts": {
