@@ -26,15 +26,15 @@ window.onload = async () => {
     message.innerText = "A new update is available. Downloading now?";
     console.log(arg);
       (notification.classList.contains('hidden')) ? notification.classList.remove("hidden") : null;
-    (downloadButton.classList.contains('hidden')) ? downloadButton.classList.remove("hidden"): null;
-    (closeButton.classList.contains('hidden')) ? closeButton.classList.remove("hidden"): null;
+    (downloadBtn.classList.contains('hidden')) ? downloadBtn.classList.remove("hidden"): null;
+    (closeBtn.classList.contains('hidden')) ? closeBtn.classList.remove("hidden"): null;
   });
 
   ipcRenderer.on("update_notAvailable", (event) => {
     //ipcRenderer.removeAllListeners("update_notAvailable");
     message.innerText = "No Updates. Current version is up-to-date.";
     (notification.classList.contains('hidden')) ? notification.classList.remove("hidden"): null;
-    (closeButton.classList.contains('hidden')) ? closeButton.classList.remove("hidden"): null;
+    (closeBtn.classList.contains('hidden')) ? closeBtn.classList.remove("hidden"): null;
   });
 
   ipcRenderer.on("update_downloaded", () => {
@@ -43,12 +43,12 @@ window.onload = async () => {
       "Update Downloaded. It will be installed on restart. Restart now?";
     (notification.classList.contains('hidden')) ? notification.classList.remove("hidden"): null;
     (restartButton.classList.contains('hidden')) ? restartButton.classList.remove("hidden"): null;
-    (closeButton.classList.contains('hidden')) ? closeButton.classList.remove("hidden"): null;
+    (closeBtn.classList.contains('hidden')) ? closeBtn.classList.remove("hidden"): null;
 
   });
 
   ipcRenderer.on("progress_available", (event, args) => {
-    message.innerText = "Progress ->", args.percent;
+    message.innerText = "Progress -> "+ args.percent;
     console.log(args);
       (notification.classList.contains('hidden')) ? notification.classList.remove("hidden") : null;
   });
@@ -59,23 +59,23 @@ window.onload = async () => {
 
   function closeNotification() {
     (!notification.classList.contains('hidden')) ? notification.classList.add("hidden"): null;
-    (!downloadButton.classList.contains('hidden')) ? downloadButton.classList.add("hidden"): null;
-    (!closeButton.classList.contains('hidden')) ? closeButton.classList.add("hidden"): null;
+    (!downloadBtn.classList.contains('hidden')) ? downloadBtn.classList.add("hidden"): null;
+    (!closeBtn.classList.contains('hidden')) ? closeBtn.classList.add("hidden"): null;
   }
 
   function downloadApp() {
     ipcRenderer.send("download_app");
     (!notification.classList.contains('hidden')) ? notification.classList.add("hidden"): null;
-    (!downloadButton.classList.contains('hidden')) ? downloadButton.classList.add("hidden"): null;
-    (!closeButton.classList.contains('hidden')) ? closeButton.classList.add("hidden"): null;
+    (!downloadBtn.classList.contains('hidden')) ? downloadBtn.classList.add("hidden"): null;
+    (!closeBtn.classList.contains('hidden')) ? closeBtn.classList.add("hidden"): null;
   }
 
   function restartApp() {
     ipcRenderer.send("restart_app");
     (!notification.classList.contains('hidden')) ? notification.classList.add("hidden"): null;
     (!restartButton.classList.contains('hidden')) ? restartButton.classList.add("hidden"): null;
-    (!closeButton.classList.contains('hidden')) ? closeButton.classList.add("hidden"): null;
-    (!downloadButton.classList.contains('hidden')) ? downloadButton.classList.add("hidden"): null;
+    (!closeBtn.classList.contains('hidden')) ? closeBtn.classList.add("hidden"): null;
+    (!downloadBtn.classList.contains('hidden')) ? downloadBtn.classList.add("hidden"): null;
   }
 
 }
