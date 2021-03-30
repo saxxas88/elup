@@ -8,7 +8,8 @@ autoUpdater.logger.transports.file.level = "debug"
 let mainWindow;
 let updater;
 
-autoUpdater.autoDownload = true
+autoUpdater.autoDownload = false
+autoUpdater.autoInstallOnAppQuit = false
 
 autoUpdater.on('error', (error) => {
   dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString())
@@ -31,60 +32,39 @@ function createWindow () {
   });
 
   mainWindow.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater.checkForUpdates();
   });
 
   
 }
 
 autoUpdater.on('update-available', async(info) => {
-    dialog.showMessageBox({
-        type: 'info',
-        title: 'Found Updates',
-        message: 'Found updates, do you want update now?',
-        buttons: ['Yes', 'No']
-      }, (buttonIndex) => {
-        if (buttonIndex === 0) {
-          autoUpdater.downloadUpdate()
-        }
-        else {
-          mainWindow.webContents.send('update_available','Not Try to download file')
-          updater.enabled = true
-          
-        }
-      });
  mainWindow.webContents.send('update_available',info);
-  
   });
 
   autoUpdater.on('update-not-available', () => {
-    dialog.showMessageBox({
-      title: 'No Updates',
-      message: 'Current version is up-to-date.'
-    })
+    mainWindow.webContents.send('update_notAvailable');
     updater.enabled = true
   })
 
-  autoUpdater.on('download-progress',(down)=>{
-    mainWindow.webContents.send('update_available',[down.progress]);
+  autoUpdater.on('download-progress',(progress)=>{
+    mainWindow.webContents.send('progress_available',progress);
   })
 
   autoUpdater.on('update-downloaded', () => {
-    dialog.showMessageBox({
-        title: 'Install Updates',
-        message: 'Updates downloaded, application will be quit for update...'
-      }, () => {
-          console.log('Downloaded')
-        //setImmediate(() => autoUpdater.quitAndInstall())
-      })
-
     mainWindow.webContents.send('update_downloaded');
   });
 
   ipcMain.on('restart_app', () => {
     //autoUpdater.quitAndInstall();
+    app.quit();
   });
   
+  ipcMain.on('download_app', () => {
+    let aud = autoUpdater.downloadUpdate();
+    mainWindow.webContents.send('download_update');
+  });
+
 app.on('ready', () => {
   createWindow();
 });
