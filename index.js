@@ -48,7 +48,7 @@ window.onload = async () => {
   });
 
   ipcRenderer.on("progress_available", (event, args) => {
-    message.innerText = "Progress -> "+ args.percent;
+    message.innerText = "Progress -> "+ args.percent.toFixed(2)+"%";
     console.log(args);
       (notification.classList.contains('hidden')) ? notification.classList.remove("hidden") : null;
   });
