@@ -1,0 +1,8 @@
+electron-builder.yml
+package-test.json
+
+node_modules/
+
+dist/
+
+yarn.lock
